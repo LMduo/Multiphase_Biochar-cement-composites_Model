@@ -510,7 +510,7 @@ for layer in range(NumLayers):
             FaceFlage += 1
             FaceFlageITZ += 1
 
-# Generate final polyhedral shape using wireframe definition
+# Generate  polyhedral shape using wireframe definition
 mdb.models[Modelname].parts['PolyAgg-' + str(Aggnum)].Surface(mnemonic='PolyAggSurface')
 
 for layer in range(NumLayers):
