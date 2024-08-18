@@ -3,9 +3,10 @@
 
 <h3 align="center">Author: Li, M., Zhu, X., Zhang, Y., & Tsang, D. C. W.</h3>
 
+
 <p align="center">
-  <img src="https://onlinelibrary.wiley.com/cms/asset/f554fa37-85dd-4df7-8975-e909788582dd/mice13307-fig-0003-m.jpg" width="400"/>
-  <img src="https://onlinelibrary.wiley.com/cms/asset/a9dcff94-4801-4445-b6f5-288fe8abf8c0/mice13307-fig-0007-m.jpg" width="400"/>
+  <img src="Biochar library.jpg" alt="Biochar Library" width="400"/>
+  <img src="Multi-phase model.jpg" alt="Multi-Phase Model" width="400"/>
 </p>
 
 
