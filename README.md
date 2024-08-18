@@ -5,8 +5,8 @@
 
 
 <p align="center">
-  <img src="Biochar library.jpg" alt="Biochar Library" width="80%"/>
-  <img src="Multi-phase model.jpg" alt="Multi-Phase Model" width="45%"/>
+  <img src="Biochar library.jpg" alt="Biochar Library" width="60%"/>
+  <img src="Multi-phase model.jpg" alt="Multi-Phase Model" width="30%"/>
 </p>
 
 
