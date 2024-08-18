@@ -7,14 +7,13 @@ from caeModules import *
 import os
 import numpy as np
 import math
-import numpy as np
 from visualization import *
 from odbAccess import *
 import math
 session.journalOptions.setValues(replayGeometry=INDEX,recoverGeometry=INDEX)
 session.journalOptions.setValues(replayGeometry=COORDINATE,recoverGeometry= COORDINATE)
 Mdb()
-myModel=mdb.Model(name='3D Circle Aggregate with ITZ')
+myModel=mdb.Model(name='# your model name')
 Modelname = myModel.name
 # rectangular region
 ConcreteLength=50.0  # mm, Length of rectangular concrete
@@ -23,7 +22,7 @@ ConcreteHeight=50.0    # mm, Height of rectangular concrete
 
 # Modeling based on the percentage of aggregate, not the number of aggregates
 ConcreteVolume=ConcreteLength*ConcreteWidth*ConcreteHeight                 # Volume of concrete
-AggRatio=0.3                                                   # Aggregate ratio
+AggRatio=0.35                                                   # Aggregate ratio
 TargetVolume =ConcreteVolume*AggRatio;                         # Target volume of aggregate
 TotalAggVolume= 0.0                                            # Cumulative aggregate volume
 AggGap = 1.01
@@ -31,18 +30,11 @@ BaseGapMax = 0.99
 BaseGapMin = 0.01
 
 # AGG iteration method
-AggLimite = 5000                                               # Maximum iterations for Agg
+AggLimite = 20000                                               # Maximum iterations for Agg
 # Adopt Fuller grading and compare with the CCR article
-Dmax_1 = 4.75                                               # Maximum particle size of primary grading aggregate
-Dmin_1 = 2.36                                               # Minimum particle size of primary grading aggregate
-Dmax_2 = 9.5                                               # Maximum particle size of secondary grading aggregate
-Dmin_2 = 4.75                                               # Minimum particle size of secondary grading aggregate
-Dmax_3 = 4.75                                               # Maximum particle size of tertiary grading aggregate
-Dmin_3 = 2.36                                                # Minimum particle size of tertiary grading aggregate
-Limit_1 = 0.32                                             # Primary grading boundary
-Limit_2 = 0.27                                            # Secondary grading boundary
-Limit_3 = 0.3                                             # Tertiary grading boundary
-IterLimite = 10000                                         # Maximum iteration limit
+Dmax_1 = 4.75                                               
+Dmin_1 = 2.36                                                                                      
+IterLimite = 10000                                       
 
 # Check if the first sphere is inside:
 def first_agg(point):
@@ -96,15 +88,10 @@ Aggpoint = []             # Accumulated data of generated spherical aggregates
 Aggpoints = []            # Intermediate variable
 AggData = []             # Data of spherical aggregates
 
-'''Generate spherical aggregates********************************************'''
+
 i=0
 for Aggnum in range(AggLimite):
-    if TotalAggVolume < Limit_1*ConcreteVolume:
-        radius= pow( ( np.random.random((1,1))[0][0]*(pow(Dmax_1,0.5)-pow(Dmin_1,0.5)) ) + pow(Dmin_1,0.5) , 2) /2.0  # Aggregate radius
-    elif TotalAggVolume < Limit_2*ConcreteVolume:
-        radius= pow( ( np.random.random((1,1))[0][0]*(pow(Dmax_2,0.5)-pow(Dmin_2,0.5)) ) + pow(Dmin_2,0.5) , 2) /2.0  # Aggregate radius
-    elif TotalAggVolume < Limit_3*ConcreteVolume:
-        radius= pow( ( np.random.random((1,1))[0][0]*(pow(Dmax_3,0.5)-pow(Dmin_3,0.5)) ) + pow(Dmin_3,0.5) , 2) /2.0  # Aggregate radius
+    radius= pow( ( np.random.random((1,1))[0][0]*(pow(Dmax_1,0.5)-pow(Dmin_1,0.5)) ) + pow(Dmin_1,0.5) , 2) /2.0  # Aggregate radius
     '''*********************************Aggregate placement judgment*****************************************************************************'''
     for iter in range (IterLimite):
         if iter < IterLimite - 1 :
@@ -160,7 +147,6 @@ b=AggData
 
 
 ## Define a single aggregate:
-### Define parameters for a single polygonal aggregate (number of layers, number of nodes per layer, total number of nodes):
 NumLayers = 5
 NumMiddleLayer = 8
 NumNode1st = 1
@@ -171,7 +157,6 @@ NumNode5th = 1
 AngleGap = 180.0 / (NumLayers-1)                          # Angle size of equal division
 NumTotNodes = NumNode1st+NumNode2nd+NumNode3rd+NumNode4th+NumNode5th
 
-### Multiple polygonal aggregate sets (number of aggregates, aggregate number and node coordinates set):
 NumAgg = len(AggData)                                             # Number of polygonal aggregates
 # Information of each aggregate in the polygonal aggregate set:
 RandomNodesPor = np.zeros((NumAgg,NumTotNodes,4))       # Spherical coordinates (point number, radius, theta, phi)
@@ -210,8 +195,6 @@ for Aggnum in range(len(AggData)):
     mdb.models[Modelname].sketches['__profile__'])
     del mdb.models[Modelname].sketches['__profile__']
     del mdb.models[Modelname].parts['PolyAggITZregion-'+str(Aggnum)].features['Solid extrude-1']
-    ##radius= pow( ( np.random.random((1,1))[0][0]*(pow(Dmax,0.5)-pow(Dmin,0.5)) ) + pow(Dmin,0.5) , 2) /2.0  # Aggregate radius
-    ## Define the point coordinates for each aggregate (spherical coordinates, to be converted to Cartesian xyz coordinates later):
     RadiusVio = 0.15         # Node fluctuation coefficient along the radius (radial) [relative to radius[0,1]]
     ## Angle fluctuations can affect convergence, it is recommended to keep around 12, or adjust the fluctuation range, otherwise generation may fail
     AngleVio = 9           # Node fluctuation range along the angle (theta & phi)
@@ -338,11 +321,6 @@ for Aggnum in range(len(AggData)):
                 mdb.models[Modelname].parts['PolyAgg-'+str(Aggnum)].WirePolyLine(mergeType=IMPRINT, meshable=
                     ON, points=((b1,b2), (b2, b3), (b3, b1)))
         ############################################# Middle layers (2,3) -> (1 2) [excluding 3] 8 nodes correspond to 8 node connections:########################################################
-        #####*********************************The middle layer must be established with the relationship with the layer!!! Otherwise, there will be problems with the generated surface *********************************#####
-        elif abs(layer - 3) >= 1e-10:
-            ## The middle layer consists of two triangles combined, b and c each control one triangle
-            for Node in range(NumMiddleLayer):
-                # Generate the triangle controlled by b, starting from 2-10-11
                 a1[0] = RandomNodesCar[Aggnum][Node + (layer-1)*NumMiddleLayer+NumNode1st][1]
                 a1[1] = RandomNodesCar[Aggnum][Node + (layer-1)*NumMiddleLayer+NumNode1st][2]
                 a1[2] = RandomNodesCar[Aggnum][Node + (layer-1)*NumMiddleLayer+NumNode1st][3]
@@ -626,7 +604,6 @@ AggCentroid[Aggnum][2]=mdb.models[Modelname].rootAssembly.getMassProperties()['v
 AggCentroid[Aggnum][3]=mdb.models[Modelname].rootAssembly.getMassProperties()['volumeCentroid'][2]  # z-coordinate of the centroid
 '''***************************************ITZ region****************************************************'''
 ### ITZ region
-# Can be connected into a line and then define a point, store this point in the ITZ point set, then delete the defined line
 DatumsPoints = []
 for ITZregion in range(NumTotNodes):
     a1 = [0,0,0]
@@ -648,7 +625,7 @@ for ITZregion in range(NumTotNodes):
     '''Generate ITZ region (ITZ thickness varies with the radius of the aggregate, but for efficiency of placement, choose to generate inward)'''
     mdb.models[Modelname].parts['PolyAgg-'+str(Aggnum)].DatumPointByEdgeParam(edge=
         mdb.models[Modelname].parts['PolyAgg-'+str(Aggnum)].edges.findAt(((b1[0]+b2[0])/2, (b1[1]+b2[1])/2, (b1[2]+b2[2])/2)),
-        parameter=0.9, isDependent=False)
+        parameter=0.95, isDependent=False)
     '''According to the radius of each aggregate and the fixed ITZ thickness, calculate the parameter'''
     # Delete the generated line segment for later calculation
     del mdb.models[Modelname].parts['PolyAgg-'+str(Aggnum)].features['Wire-'+str(33)]
@@ -663,7 +640,6 @@ for Node in range(NumTotNodes):
     RandomNodesITZCar[Aggnum][Node][2] = DatumsPoints[Node].pointOn[1]
     RandomNodesITZCar[Aggnum][Node][3] = DatumsPoints[Node].pointOn[2]
 
-'''************************************ After generating ITZ coordinate points, repeat the steps above to regenerate from points to lines to surfaces to solids *********************************************'''
 '''*********************************************************** Connect 26 points into lines *********************************************************'''
 # Define an empty list a, assign points to the list, define an empty tuple b, convert the list into a tuple for easy line connection, c is used for middle layer connection
 a1 = [0,0,0]
@@ -800,8 +776,6 @@ for layer in range(NumLayers):
                 c3 = tuple(a6)          # Point 10
             mdb.models[Modelname].parts['PolyAggITZregion-'+str(Aggnum)].WirePolyLine(mergeType=IMPRINT, meshable=
                 ON, points=((b1,b2), (b2, b3), (b3, b1)))
-            # No need to connect c1c2c3 because after connecting two triangles, a quadrilateral can be formed, connecting would cause errors
-'''**************************************************************************************************************'''
 '''*************************Line -> Surface: Merge the closed line segments into surfaces using coveredge and findat methods [need to define a new variable to store all generated surfaces for later assignment of solid attributes] *********************************************************'''
 for layer in range(NumLayers):
     ############################################# Close the top surface #############################################
@@ -1018,9 +992,7 @@ for layer in range(NumLayers):
             FacesITZ[FaceFlageITZ][12] = (a4[2]+a5[2]+a6[2])/3                        # Center point z coordinate
             # After finding each surface, increment the surface counter:
             FaceFlageITZ += 1                                      # Update the surface counter
-'''**************************************************************************************************************'''
 '''*******************Surface -> Solid: Record the center coordinates of all surfaces generated for a single aggregate into the facelist set and find them in abaqus*********************************************************'''
-# All surfaces have been generated, and the midpoint coordinates of the surfaces have been saved in Faces[10] (x-coordinate); Faces[11] (y-coordinate); Faces[12] (z-coordinate)
 FacelistITZ = []       # Define an empty set to store all surfaces to be converted into solids
 # Store all surfaces into facelist through a loop:
 for k in range(int(FacesITZ.shape[0])):
