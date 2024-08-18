@@ -1020,11 +1020,11 @@ for Aggnum in range(len(AggData)):
 '''***********************Generate the outer contour of concrete**********************************************************************'''
 # Commands to generate the concrete contour
 xmin=0
-xmax=ConcreteLength+0.2
+xmax=ConcreteLength
 ymin=0
-ymax=ConcreteWidth+0.2
+ymax=ConcreteWidth
 zmin=0
-zmax=ConcreteHeight+0.2
+zmax=ConcreteHeight
 zlength=abs(zmax-zmin)
 ConcreteSketch = myModel.ConstrainedSketch(name='concretecube',sheetSize=200)
 ConcreteSketch.rectangle(point1=(xmin, ymin), point2=(xmax, ymax))
