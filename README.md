@@ -1,8 +1,20 @@
-
 <h1 align="center">A Multi-Phase Mechanical Model of Biochar–Cement Composites at the Mesoscale</h1>
 
-<h3 align="center">Author: Li, M., Zhu, X., Zhang, Y., & Tsang, D. C. W.</h3>
+<h3 align="center">
+  Muduo Li<sup>1</sup>, Xiaohong Zhu<sup>2</sup>, Yuying Zhang<sup>1,3</sup>, Daniel C. W. Tsang<sup>1</sup>
+</h3>
 
+<h4 align="center">
+  <sup>1</sup>Department of Civil and Environmental Engineering, The Hong Kong University of Science and Technology, Hong Kong, China<br>
+  <sup>2</sup>Department of Civil and Environmental Engineering, University of California, Berkeley, Berkeley, California, USA<br>
+  <sup>3</sup>Laboratory for Waste Management, Nuclear Energy and Safety, Paul Scherrer Institute, Villigen, Switzerland
+</h4>
+
+<p align="center">
+  <a href="https://doi.org/10.1111/mice.13307">
+    <img src="https://img.shields.io/badge/DOI-10.1111%2Fmice.13307-blue.svg" alt="DOI Badge">
+  </a>
+</p>
 
 <p align="center">
   <img src="Biochar library.jpg" alt="Biochar Library" width="65%"/>
