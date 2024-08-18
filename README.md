@@ -17,8 +17,7 @@
 </p>
 
 <p align="center">
-  <img src="Biochar library.jpg" alt="Biochar Library" width="65%"/>
-  <img src="Multi-phase model.jpg" alt="Multi-Phase Model" width="25%"/>
+  <img src="CoverImage.png" alt="Cover Image" width="65%"/>
 </p>
 
 
