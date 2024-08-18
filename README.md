@@ -17,7 +17,7 @@
 </p>
 
 <p align="center">
-  <img src="CoverImage.png" alt="Cover Image" width="65%"/>
+  <img src="Cover_Image.png" alt="Cover Image" width="65%"/>
 </p>
 
 
