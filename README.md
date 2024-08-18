@@ -2,6 +2,12 @@
 
 <h3 align="center">Author: Li, M., Zhu, X., Zhang, Y., & Tsang, D. C. W.</h3>
 
+<p align="center">
+  <img src="https://onlinelibrary.wiley.com/path_to_Figure3.png" alt="Figure 3" width="400"/>
+  <img src="https://onlinelibrary.wiley.com/path_to_Figure7.png" alt="Figure 7" width="400"/>
+</p>
+
+
 ## Introduction
 We introduce a framework to create a multi-phase model of biochar-cement composites. The geometry is built in Grasshopper, and the code is based on Python. It contains three files: 
 - **Three-Phase Model**: This includes cement, aggregate, and the interfacial transition zone (ITZ).
